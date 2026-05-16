@@ -46,7 +46,7 @@ export default async function BlogPostPage({
 
         {hasImages && (
           <div className="flex flex-col gap-8 my-8">
-            {blog.images.map((src, idx) => (
+            {blog?.images?.map((src, idx) => (
               <div
                 key={idx}
                 className="relative w-full h-[400px] rounded-xl overflow-hidden border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5"
