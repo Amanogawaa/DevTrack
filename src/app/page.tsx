@@ -1,65 +1,86 @@
 import Image from "next/image";
+import Link from "next/link";
+import { POST_CATEGORIES, postsInCategory } from "../data/data";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="flex flex-col gap-16 ">
+      <section className="space-y-6 max-w-2xl">
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+          Thoughts, ideas, and minimalist design.
+        </h1>
+        <p className="text-lg opacity-70 leading-relaxed">
+          Welcome to my digital garden. A place where I share my thoughts about
+          software, design, and aesthetics.
+        </p>
+      </section>
+
+      <div className="flex flex-col gap-16">
+        {POST_CATEGORIES.map((category) => {
+          const posts = postsInCategory(category);
+          if (posts.length === 0) return null;
+
+          return (
+            <section key={category} className="space-y-8">
+              <h2 className="text-2xl font-bold tracking-tight border-b border-black/10 dark:border-white/10 pb-4">
+                {category}s
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {posts.map((blog) => (
+                  <Link
+                    href={`/blog/${blog.slug}`}
+                    key={blog.id}
+                    className="group relative block h-full"
+                  >
+                    <article className="h-full flex flex-col p-6 rounded-2xl bg-white/5 dark:bg-black/5 backdrop-blur-sm border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 transition-all duration-300">
+                      <div className="relative mb-5 h-44 w-full overflow-hidden rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5">
+                        {blog.images && blog.images.length > 0 ? (
+                          <Image
+                            src={blog.images[0]}
+                            alt={blog.title}
+                            fill
+                            className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                          />
+                        ) : blog.pdfs && blog.pdfs.length > 0 ? (
+                          <div className="flex h-full w-full items-center justify-center text-xs font-mono uppercase tracking-[0.2em] opacity-60">
+                            PDF x{blog.pdfs.length}
+                          </div>
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-xs font-mono uppercase tracking-[0.2em] opacity-40">
+                            No media
+                          </div>
+                        )}
+                        {blog.pdfs && blog.pdfs.length > 0 && (
+                          <span className="absolute right-3 top-3 rounded-full border border-black/20 dark:border-white/20 bg-white/70 dark:bg-black/70 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.2em]">
+                            PDF {blog.pdfs.length}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex-1 space-y-4">
+                        <div className="text-xs font-mono opacity-60 tracking-wider">
+                          {blog.date}
+                        </div>
+                        <h3 className="text-xl font-semibold leading-tight group-hover:underline underline-offset-4 decoration-1">
+                          {blog.title}
+                        </h3>
+                        <p className="text-sm opacity-80 leading-relaxed display-webkit-box line-clamp-3">
+                          {blog.excerpt}
+                        </p>
+                      </div>
+                      <div className="mt-8 pt-4 border-t border-black/5 dark:border-white/5 text-sm font-medium flex items-center justify-between">
+                        <span>Read article</span>
+                        <span className="opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
+                          →
+                        </span>
+                      </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
     </div>
   );
 }
