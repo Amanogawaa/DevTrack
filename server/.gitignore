@@ -1,0 +1,39 @@
+# Environment variables (sensitive data)
+.env
+.env.*
+!.env.example
+
+# IDE specific settings
+.vscode/
+.idea/
+.code/
+.mypy_cache/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+.env/
+venv/
+env/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Database files
+*.sqlite
+*.sqlite3
+db.sqlite3
+
+# Logs
+*.log
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Distribution
+*.dist-info/
