@@ -1,21 +1,27 @@
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file="env",
+        env_file=".env",
         case_sensitive=False,
-        extra="ignore"
+        env_file_encoding="utf-8",
+        extra="ignore",
     )
-    
-    app_name: str = "DevTrack"
-    app_description: str = "DevTrack is a project management tool for developers."
-    app_version: str = "1.0.0"
-    environment: str = "local"
-    show_docs_envs: tuple[str, ...] = ("local", "staging")
-    database_url: str | None = None
 
-    secret_key: str = "super-secret-key"
-    access_token_expire_minutes: int = 10800
+    APP_NAME: str = "DevTrack"
+    APP_DESCRIPTION: str = "DevTrack is a project management tool for developers."
+    APP_VERSION: str = "1.0.0"
+    API_VERSION_PREFIX: str = "/api/v1"
+    ENVIRONMENT: str = "local"
+    SHOW_DOCS_ENVS: tuple[str, ...] = ("local", "staging")
+    DATABASE_URL: str = Field(..., validation_alias="DATABASE_URL")
+
+    SECRET_KEY: SecretStr
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    ALGORITHM: str = "HS256"
+
 
 settings = Settings()
-
