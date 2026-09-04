@@ -1,10 +1,7 @@
 import logging
-from typing import TYPE_CHECKING
+from fastapi import Request
 
 from starlette.middleware.base import BaseHTTPMiddleware
-
-if TYPE_CHECKING:
-    from fastapi import Request
 
 logging.basicConfig(
     filename="app.log",

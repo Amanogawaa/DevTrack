@@ -1,6 +1,6 @@
 import enum
 import uuid
-from typing import TYPE_CHECKING
+from datetime import datetime
 
 from sqlalchemy import (
     UUID,
@@ -17,8 +17,6 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-if TYPE_CHECKING:
-    from datetime import datetime
 
 NAMING_CONVENTION: dict[str, str] = {
     "ix": "%(column_0_label)s_idx",
@@ -91,7 +89,7 @@ class User(Base):
     id: Mapped[UUID] = uuid_pk()
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     username: Mapped[str | None] = mapped_column(String, unique=True, nullable=True)
-    role: Mapped[str] = mapped_column(String, default="member", nullable=False)
+    role: Mapped[OrganizationRole] = mapped_column(String, default=OrganizationRole.MEMBER, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
 

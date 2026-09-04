@@ -1,3 +1,4 @@
+from app.api.route import api_router
 from contextlib import asynccontextmanager
 from typing import Any
 
@@ -5,7 +6,6 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from app.api.route import api_router
 from app.core.configs import settings
 from app.db.schema import Base
 from app.db.session import engine
@@ -44,13 +44,9 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 async def response_exception_handler(request: Request, exc: HTTPException):
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
-
-# add cors config later on
-
 app.add_middleware(LoggingMiddleware)
 
 app.include_router(api_router, prefix="/api/v1")
-
 
 @app.get("/")
 async def health_check():

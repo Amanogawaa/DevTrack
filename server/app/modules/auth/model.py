@@ -1,13 +1,9 @@
-from typing import TYPE_CHECKING, Optional
-
+import uuid
+from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.db.schema import OrganizationRole
-
-if TYPE_CHECKING:
-    import uuid
-    from datetime import datetime
-
 
 class Token(BaseModel):
     access_token: str
@@ -19,13 +15,16 @@ class UserBase(BaseModel):
     role: OrganizationRole = OrganizationRole.MEMBER
     is_active: bool = True
 
+class LoginUser(BaseModel):
+    email: EmailStr
+    password: str
 
 class CreateUser(UserBase):
     username: Optional[str] = None
     password: str = Field(min_length=8)
 
 
-class User(BaseModel):
+class UserResponse(BaseModel):
     id: uuid.UUID
     username: str
     email: str

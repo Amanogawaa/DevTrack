@@ -11,11 +11,11 @@ pwd_hash = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 
-def hash_pwd(password: str) -> str:
+def hash_password(password: str) -> str:
     return pwd_hash.hash(password)
 
 
-def verify_pwd(password: str, hashed_password: str) -> bool:
+def verify_password(password: str, hashed_password: str) -> bool:
     return pwd_hash.verify(password, hashed_password)
 
 
